@@ -1,3 +1,4 @@
 #!/bin/sh
 
 echo "I am an install file for a hook."
+echo "This is a file modification to test the post-merge hook."
