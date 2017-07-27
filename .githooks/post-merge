@@ -1,0 +1,31 @@
+#!/bin/sh
+
+install_files=$(find ./ -name *.install)
+echo $install_files
+
+for file in $install_files
+do
+  if [ ! -e "$file.installed" ]
+  then
+    echo "$file does not exist."
+    $file
+    touch $file.installed
+    echo "Installed"
+    continue
+  fi
+
+  install_change_date=$(stat -c %y $file)
+  modified=$(git log --since="$install_change_date")
+
+  echo "$file is already installed."
+  echo "Install was changed on $install_change_date."
+
+  if [[ -z "$modified" ]]
+  then
+    echo "$file has been modified since last run."
+    $file
+    touch $file.installed
+    echo "Installed"
+  fi
+
+done 
