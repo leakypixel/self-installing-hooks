@@ -14,13 +14,13 @@ do
     continue
   fi
 
-  install_change_date=$(stat -c %y $file)
-  modified=$(git log --since="$install_change_date")
+  install_change_date=$(stat -c %y $file.installed)
+  modified=$(git log --since="$install_change_date" $file)
 
   echo "$file is already installed."
   echo "Install was changed on $install_change_date."
 
-  if [[ -z "$modified" ]]
+  if [[ ! -z "$modified" ]]
   then
     echo "$file has been modified since last run."
     $file
